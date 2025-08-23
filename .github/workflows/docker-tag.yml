@@ -1,0 +1,14 @@
+name: docker-build-tag
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  docker-tag:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    uses: ./.github/workflows/docker-build-image.yml
+    with:
+      registry_push: true
+      target_branch: ${{ github.head_ref }}

@@ -1,0 +1,22 @@
+name: docker-build-latest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 04 * * SUN"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/updatecli.yml"
+      - ".github/dependabot.yml"
+      - ".github/docker-hub-desc.yml"
+
+jobs:
+  build:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    uses: ./.github/workflows/docker-build-image.yml
+    with:
+      registry_push: true
+      target_branch: ${{ github.head_ref }}
