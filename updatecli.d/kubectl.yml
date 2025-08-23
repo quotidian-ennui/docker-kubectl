@@ -1,0 +1,64 @@
+# {{ $scmEnabled := and (env "GITHUB_REPOSITORY_OWNER") (env "GITHUB_REPOSITORY_NAME") }}
+name: "kubectl"
+
+# {{ if $scmEnabled }}
+actions:
+  pull_request:
+    scmid: github
+    title: 'deps(kubectl): Bump kubectl version to {{ source "latest" }}'
+    kind: github/pullrequest
+    spec:
+      labels:
+        - dependencies
+
+scms:
+  github:
+    disabled: false
+    kind: github
+    spec:
+      branch: main
+      owner: quotidian-ennui
+      repository: docker-kubectl
+      user: '{{ requiredEnv "UPDATECLI_GITHUB_USER" }}'
+      email: '{{ requiredEnv "UPDATECLI_GITHUB_EMAIL" }}'
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_USER" }}'
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      commitmessage:
+        type: "deps"
+        scope: "kubectl"
+        title: 'bump kubectl version to {{ source "latest" }}'
+        hidecredit: true
+# {{ end }}
+
+sources:
+  latest:
+    name: Latest stable kubectl version
+    kind: http
+    spec:
+      url: https://dl.k8s.io/release/stable.txt
+    # The github release has no changelog information anyway...
+    # name: Github release for kubernetes/kubectl
+    # kind: githubrelease
+    # spec:
+    #   owner: kubernetes
+    #   repository: kubernetes
+    #   token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+    #   versionfilter:
+    #     kind: semver
+    # transformers:
+    #   - trimprefix: "Kubernetes v"
+
+targets:
+  dockerfiles:
+    kind: dockerfile
+    sourceid: latest
+    name: Updates dockerfile
+    # {{ if $scmEnabled }}
+    scmid: github
+    # {{ end }}
+    spec:
+      files:
+        - Dockerfile
+      instruction:
+        keyword: "ARG"
+        matcher: "KUBECTL_VERSION"

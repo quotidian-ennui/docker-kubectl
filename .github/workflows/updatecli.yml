@@ -1,0 +1,31 @@
+name: updatecli
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 07 * * SUN"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  updatecli:
+    name: Run updatecli
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: "Create Token"
+        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2.1.1
+        id: app-token
+        with:
+          app-id: ${{ vars.WORKFLOW_UPDATE_APP_ID }}
+          private-key: ${{ secrets.WORKFLOW_UPDATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: "${{ github.event.repository.name}}"
+      - name: updatecli
+        uses: quotidian-ennui/actions-olio/default-updatecli@main
+        with:
+          token: ${{ steps.app-token.outputs.token }}
