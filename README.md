@@ -1,2 +1,5 @@
 # docker-kubectl
-bitname/kubectl has gone away and it's not coming back
+
+> I don't always run latest, and bitnami/kubectl has gone away and it's not coming back.
+
+
