@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim AS downloader
 
-ARG KUBECTL_VERSION=v1.34.2
+ARG KUBECTL_VERSION=v1.34.3
 ARG KUBECTL_URL="https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux"
 
 RUN \
