@@ -5,12 +5,20 @@ on:
     types:
       - pr-trigger
 
+permissions: {}
+
 # A push via dependabot basically means that the github actions
 # have been upgraded; just make sure that the docker build works
 # but don't push a new image.
 jobs:
   docker_build:
     uses: ./.github/workflows/docker-build-image.yml
+    secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      statuses: write
     with:
       registry_push: false
       target_branch: ${{ github.event.client_payload.base.ref }}
@@ -20,6 +28,9 @@ jobs:
   actions_merge:
     runs-on: ubuntu-latest
     name: Dependabot Merge (action changes)
+    permissions:
+      contents: write
+      pull-requests: write
     needs:
       - docker_build
     steps:
