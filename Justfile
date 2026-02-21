@@ -60,3 +60,9 @@ release tag push="localonly":
     *)
       ;;
   esac
+
+# pin workflows using pinact
+[group("housekeeping")]
+[script]
+pin-gha *args="":
+  pinact run {{ args }}
