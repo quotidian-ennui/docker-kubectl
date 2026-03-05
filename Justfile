@@ -42,25 +42,6 @@ BASE_TAG := USER / "kubectl"
 @changelog *args="--unreleased":
     git cliff "$@"
 
-# tag and optionally push the tag
-[group("release")]
-[script]
-release tag push="localonly":
-  #
-  set -eo pipefail
-
-  git diff --quiet || (echo "⚠️ git is dirty" && exit 1)
-  tag="{{ tag }}"
-  push="{{ push }}"
-  git tag "$tag" -m"release: $tag"
-  case "$push" in
-    push|github)
-      git push --tags
-      ;;
-    *)
-      ;;
-  esac
-
 # pin workflows using pinact
 [group("housekeeping")]
 [script]
