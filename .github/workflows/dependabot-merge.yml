@@ -1,0 +1,13 @@
+name: dependabot-merge
+run-name: Dependabot workflow changes (${{ github.event.client_payload.detail.pull_request }})
+on:
+  repository_dispatch:
+    types:
+      - dependabot-merge
+
+permissions: {}
+
+jobs:
+  actions_merge:
+    uses: quotidian-ennui/workflows-olio/.github/workflows/action-dependabot-merge.yml@main
+    secrets: inherit
