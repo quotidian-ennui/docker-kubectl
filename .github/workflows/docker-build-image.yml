@@ -55,3 +55,10 @@ jobs:
           ghcr_image_name: ghcr.io/${{ github.repository }}
           ghcr_user: ${{ github.repository_owner }}
           ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test Image
+        id: docker_test
+        env:
+          DOCKER_TAGS: ${{ steps.docker_build.outputs.image_tags }}
+        run: |
+          test_image=$(echo "$DOCKER_TAGS" | head -n 1 | cut -d' ' -f1)
+          docker run --rm "$test_image" kubectl version --client

@@ -13,8 +13,13 @@ BASE_TAG := USER / "kubectl"
 
 # Build images
 [group("build")]
-@build tag="latest":
-    docker build . --tag "{{ BASE_TAG }}:$1"
+[script]
+build tag="latest":
+    set -eo pipefail
+
+    docker_tag="{{ BASE_TAG }}:{{ tag }}"
+    docker build . --tag "$docker_tag"
+    docker run --rm "$docker_tag" kubectl version --client
 
 # Run a specific image
 [group("build")]
