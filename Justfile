@@ -49,9 +49,14 @@ next:
     set -eo pipefail
 
     lastTag=$(git tag | sort -rV | head -n1)
-    kubectl_v=$(git log --format=format:'%s' "$lastTag"..HEAD | grep "Bump kubectl" | sed -E "s/^.*(v[0-9]+\.[0-9]+\.[0-9]+).*$/\1/g" | sort -rV | head -n1)
-    kubectl_version="${kubectl_v##v}"
-    echo "$kubectl_version"
+    version_v=$(git log --format=format:'%s' "$lastTag"..HEAD | grep "Bump kubectl" | sed -E "s/^.*(v[0-9]+\.[0-9]+\.[0-9]+).*$/\1/g" | sort -rV | head -n1) || true
+    version="${version_v##v}"
+    if [[ -z "$version" ]]; then
+      echo "No Version bump of kubectl found?"
+      exit 1;
+    else
+      echo "$version"
+    fi
 
 # Tag and optionally push
 [group("release")]
