@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS downloader
+FROM debian:trixie-slim AS downloader
 
 ARG KUBECTL_VERSION=v1.35.4
 ARG KUBECTL_URL="https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux"
@@ -22,6 +22,6 @@ RUN \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/kubectl
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 COPY --from=downloader /usr/local/bin/kubectl /usr/local/bin/kubectl
