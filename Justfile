@@ -42,8 +42,23 @@ BASE_TAG := USER / "kubectl"
 @changelog *args="--unreleased":
     git cliff "$@"
 
-# pin workflows using pinact
-[group("housekeeping")]
+# Show the next version based on kubectl bumps
+[group("release")]
 [script]
-pin-gha *args="":
-  pinact run {{ args }}
+next:
+    set -eo pipefail
+
+    lastTag=$(git tag | sort -rV | head -n1)
+    kubectl_v=$(git log --format=format:'%s' "$lastTag"..HEAD | grep "Bump kubectl" | sed -E "s/^.*(v[0-9]+\.[0-9]+\.[0-9]+).*$/\1/g" | sort -rV | head -n1)
+    kubectl_version="${kubectl_v##v}"
+    echo "$kubectl_version"
+
+# Tag and optionally push
+[group("release")]
+[script]
+autotag push="localonly":
+    set -eo pipefail
+
+    next=$(just next)
+    echo "ℹ️ Tag & release $next"
+    just -g release "$next" {{ push }}
