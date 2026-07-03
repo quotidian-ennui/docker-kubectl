@@ -49,6 +49,6 @@ jobs:
           repositories: "${{ github.event.repository.name}}"
       - name: Dependabot Merge
         id: dependabot_merge
-        uses: quotidian-ennui/actions-olio/dependabot-merge@528d118cf867515584403396edee8a564a23bc00 # v1.3.0
+        uses: quotidian-ennui/actions-olio/dependabot-merge@553ec3b65772a6de54db9a6f48f07c16a7bd3823 # v1.3.1
         with:
           token: ${{ steps.app-token.outputs.token }}
