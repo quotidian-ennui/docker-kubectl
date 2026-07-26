@@ -1,6 +1,6 @@
 FROM debian:trixie-20260713-slim@sha256:020c0d20b9880058cbe785a9db107156c3c75c2ac944a6aa7ab59f2add76a7bd AS downloader
 
-ARG KUBECTL_VERSION=v1.36.2
+ARG KUBECTL_VERSION=v1.36.3
 ARG KUBECTL_URL="https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux"
 
 RUN \
