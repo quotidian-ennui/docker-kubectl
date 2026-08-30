@@ -1,6 +1,6 @@
-set positional-arguments := true
-set dotenv-load := true
-set unstable := true
+set positional-arguments
+set dotenv-load
+set unstable
 set script-interpreter := ['/usr/bin/env', 'bash']
 
 USER := `whoami`
@@ -63,10 +63,12 @@ next:
       echo "$version"
     fi
 
+alias autotag := please-release
+
 # Tag and optionally push
 [group("release")]
 [script]
-autotag push="localonly":
+please-release push="localonly":
     set -eo pipefail
 
     next=$(just next)
