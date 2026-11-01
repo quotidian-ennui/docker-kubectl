@@ -68,7 +68,7 @@ alias autotag := please-release
 # Tag and optionally push
 [group("release")]
 [script]
-please-release push="localonly":
+please-release push="github":
     set -eo pipefail
 
     next=$(just next)
