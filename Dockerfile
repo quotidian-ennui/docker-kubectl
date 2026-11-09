@@ -1,4 +1,4 @@
-FROM debian:trixie-20261027-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4 AS downloader
+FROM debian:trixie-20261104-slim@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2 AS downloader
 
 ARG KUBECTL_VERSION=v1.37.2
 ARG KUBECTL_URL="https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux"
@@ -22,6 +22,6 @@ RUN \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/kubectl
 
-FROM debian:trixie-20261027-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4
+FROM debian:trixie-20261104-slim@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2
 
 COPY --from=downloader /usr/local/bin/kubectl /usr/local/bin/kubectl
